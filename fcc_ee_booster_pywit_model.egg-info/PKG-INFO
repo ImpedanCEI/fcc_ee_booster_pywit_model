@@ -1,0 +1,18 @@
+Metadata-Version: 2.4
+Name: fcc_ee_booster_pywit_model
+Version: 0.1.0
+Summary: Impedance model of the FCC-ee booster
+Home-page: https://github.com/ImpedanCEI/fcc_ee_booster_pywit_model
+Author: Lorenzo Giacomel, Dora Gibellieri, Carlo Zannini, Chiara Antuono
+Author-email: lorenzo.giacomel@cern.ch, dora.gibellieri@cern.ch, carlo.zannini@cern.ch
+License: MIT
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: matplotlib
+Requires-Dist: cpymad
+Dynamic: author
+Dynamic: author-email
+Dynamic: home-page
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: summary

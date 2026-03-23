@@ -1,0 +1,16 @@
+setup.py
+fcc_ee_booster_pywit_model/__init__.py
+fcc_ee_booster_pywit_model/fcc_ee_pywit_model.py
+fcc_ee_booster_pywit_model/package_paths.py
+fcc_ee_booster_pywit_model/parameters.py
+fcc_ee_booster_pywit_model/utils.py
+fcc_ee_booster_pywit_model.egg-info/PKG-INFO
+fcc_ee_booster_pywit_model.egg-info/SOURCES.txt
+fcc_ee_booster_pywit_model.egg-info/dependency_links.txt
+fcc_ee_booster_pywit_model.egg-info/requires.txt
+fcc_ee_booster_pywit_model.egg-info/top_level.txt
+fcc_ee_booster_pywit_model/data/elliptic_elements/FCC_ee_vz_elliptic_elements_settings_neg_150nm.json
+fcc_ee_booster_pywit_model/data/elliptic_elements/tmp_neg_150nm.json
+fcc_ee_booster_pywit_model/data/elliptic_elements/tmp_neg_300nm.json
+fcc_ee_booster_pywit_model/data/elliptic_elements/tmp_neg_500nm.json
+fcc_ee_booster_pywit_model/data/machine_layouts/fcc_ee_heb_layout_b1.py
