@@ -1,0 +1,11 @@
+matplotlib
+numpy
+scipy
+tfs-pandas
+generic-parser
+pytest
+jinja2
+bokeh
+tabulate
+xsuite 
+cpymad
