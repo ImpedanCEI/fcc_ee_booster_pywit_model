@@ -1,10 +1,10 @@
 # %ECSV 1.0
 # ---
 # datatype:
-# - {name: time, datatype: float64}
-# - {name: longitudinal, datatype: float64}
-# - {name: dipole_x, datatype: float64}
-# - {name: dipole_y, datatype: float64}
+# - {name: time, unit: ns, datatype: float64}
+# - {name: longitudinal, unit: V/pC, datatype: float64}
+# - {name: dipole_x, unit: V/pC/m, datatype: float64}
+# - {name: dipole_y, unit: V/pC/m, datatype: float64}
 # meta: !!omap
 # - {origin: CST and IW2D}
 # - {author: Keon Hee Kim}
