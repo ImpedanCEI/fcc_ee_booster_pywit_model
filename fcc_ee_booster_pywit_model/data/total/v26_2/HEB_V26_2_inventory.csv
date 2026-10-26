@@ -1,0 +1,7 @@
+component,count,physical_length_m,location_status
+RW,1,89080.35599996046,"distributed in ring (excludes bellows, wiggler, kicker)"
+Wiggler,10,60.300000000000004,provisional symmetric S4; target beta 4 m
+Kicker,10,4.18,ring-average (provisional; kicker s not supplied)
+RF,112,,named V26.2 ac800 cavities
+BPM,2740,,named V26.2 BPMs
+Bellows,10000,1500.0,positions not available; source already ring integrated

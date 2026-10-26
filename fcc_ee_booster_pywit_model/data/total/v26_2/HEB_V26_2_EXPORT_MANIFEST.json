@@ -1,0 +1,78 @@
+{
+  "description": "V26.2 native PyWIT HEB model, newly exported component data (not re-fitted)",
+  "lattice_TFS": "fcc_ee_booster_pywit_model/data/optics/v26_2/heb_ring_z.tfs",
+  "energy_eV": 20000000000.0,
+  "beam_pipe_radius_m": 0.03,
+  "RW_length_m": 89080.35599996046,
+  "RW_NEG_thickness_m": 1.5e-07,
+  "RW_Cu_sigma_S_per_m": 58000000.0,
+  "RW_NEG_sigma_S_per_m": 1000000.0,
+  "RW_roughness_Rq_m": 3e-07,
+  "RW_reference_q": -2.1043,
+  "RW_max_frequency_Hz": 10000000000000.0,
+  "kicker_HEB_length_m": 4.18,
+  "kicker_reference_length_m": 20.0,
+  "kicker_scale": 0.209,
+  "kicker_original_effective_bandwidth_GHz": {
+    "long": {
+      "source_file_max_GHz": 49.99593,
+      "last_nonzero_GHz": 10.23914461144
+    },
+    "x": {
+      "source_file_max_GHz": 49.99593,
+      "last_nonzero_GHz": 10.23914461144
+    },
+    "y": {
+      "source_file_max_GHz": 49.99593,
+      "last_nonzero_GHz": 10.23914461144
+    }
+  },
+  "wake_bunch_sigma_m": 0.0004,
+  "wake_fmax_Hz": 10000000000000.0,
+  "wake_df_Hz": 100000000.0,
+  "total_impedance_fmax_Hz": 50000000000.0,
+  "RF_BPM_bellows_source_files": "unchanged (see source_provenance.csv)",
+  "file_units": {
+    "impedance_long": "Ohm",
+    "impedance_dipole": "Ohm/m",
+    "wake_long": "V/pC",
+    "wake_dipole": "V/pC/mm",
+    "s": "mm"
+  },
+  "created_UTC": "2026-10-26T10:35:20+00:00",
+  "exported_files": [
+    "elliptic_elements/base_30mm/neg150nm/v26_2_GoldTL_Rq0p3um/Z_long_RW_GoldTL_Rq0p3um_v26_2.txt",
+    "elliptic_elements/base_30mm/neg150nm/v26_2_GoldTL_Rq0p3um/Z_long_RW_GoldTL_Rq0p3um_high_10THz_v26_2.txt",
+    "kickers/HEB_v26_2_4p18m/Z_long_optimizedKicker_HEB_4p18m_v26_2.txt",
+    "total/v26_2/Z_total_long_v26_2.txt",
+    "elliptic_elements/base_30mm/neg150nm/v26_2_GoldTL_Rq0p3um/W_long_RW_GoldTL_sigma0p4mm_v26_2.txt",
+    "kickers/HEB_v26_2_4p18m/W_long_optimizedKicker_HEB_4p18m_sigma0p4mm_v26_2.txt",
+    "total/v26_2/W_total_long_sigma0p4mm_v26_2.txt",
+    "total/v26_2/HEB_V26_2_all_component_wakes_long_sigma0p4mm.csv",
+    "total/v26_2/HEB_V26_2_all_component_budget_long.csv",
+    "elliptic_elements/base_30mm/neg150nm/v26_2_GoldTL_Rq0p3um/Z_dipx_RW_GoldTL_Rq0p3um_v26_2.txt",
+    "elliptic_elements/base_30mm/neg150nm/v26_2_GoldTL_Rq0p3um/Z_dipx_RW_GoldTL_Rq0p3um_high_10THz_v26_2.txt",
+    "kickers/HEB_v26_2_4p18m/Z_dipx_optimizedKicker_HEB_4p18m_v26_2.txt",
+    "total/v26_2/Z_total_dipx_beta_weighted_v26_2.txt",
+    "elliptic_elements/base_30mm/neg150nm/v26_2_GoldTL_Rq0p3um/W_dipx_RW_GoldTL_sigma0p4mm_v26_2.txt",
+    "kickers/HEB_v26_2_4p18m/W_dipx_optimizedKicker_HEB_4p18m_sigma0p4mm_v26_2.txt",
+    "total/v26_2/W_total_dipx_beta_weighted_sigma0p4mm_v26_2.txt",
+    "total/v26_2/HEB_V26_2_all_component_wakes_dipx_sigma0p4mm.csv",
+    "total/v26_2/HEB_V26_2_all_component_budget_dipx.csv",
+    "elliptic_elements/base_30mm/neg150nm/v26_2_GoldTL_Rq0p3um/Z_dipy_RW_GoldTL_Rq0p3um_v26_2.txt",
+    "elliptic_elements/base_30mm/neg150nm/v26_2_GoldTL_Rq0p3um/Z_dipy_RW_GoldTL_Rq0p3um_high_10THz_v26_2.txt",
+    "kickers/HEB_v26_2_4p18m/Z_dipy_optimizedKicker_HEB_4p18m_v26_2.txt",
+    "total/v26_2/Z_total_dipy_beta_weighted_v26_2.txt",
+    "elliptic_elements/base_30mm/neg150nm/v26_2_GoldTL_Rq0p3um/W_dipy_RW_GoldTL_sigma0p4mm_v26_2.txt",
+    "kickers/HEB_v26_2_4p18m/W_dipy_optimizedKicker_HEB_4p18m_sigma0p4mm_v26_2.txt",
+    "total/v26_2/W_total_dipy_beta_weighted_sigma0p4mm_v26_2.txt",
+    "total/v26_2/HEB_V26_2_all_component_wakes_dipy_sigma0p4mm.csv",
+    "total/v26_2/HEB_V26_2_all_component_budget_dipy.csv",
+    "total/v26_2/HEB_V26_2_source_provenance.csv",
+    "total/v26_2/HEB_V26_2_inventory.csv",
+    "total/v26_2/HEB_V26_2_locations_RF.csv",
+    "total/v26_2/HEB_V26_2_locations_BPM.csv",
+    "total/v26_2/HEB_V26_2_locations_Wiggler.csv",
+    "total/v26_2/HEB_V26_2_sigma0p4mm_PyHEADTAIL.ecsv"
+  ]
+}
