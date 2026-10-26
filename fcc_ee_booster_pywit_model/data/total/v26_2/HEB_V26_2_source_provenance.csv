@@ -1,0 +1,19 @@
+family,plane,path,normalization,multiplier,input_fmax_ghz
+RF,long,fcc_ee_booster_pywit_model/data/rf_cavities/Z_single_rf_cavity_long_filter_3mm.txt,"single element, location-beta weighted",112.0,50.0
+RF,x,fcc_ee_booster_pywit_model/data/rf_cavities/Z_single_rf_cavity_dipx_filter_3mm.txt,"single element, location-beta weighted",181.79225490742525,50.0
+RF,y,fcc_ee_booster_pywit_model/data/rf_cavities/Z_single_rf_cavity_dipy_filter_3mm.txt,"single element, location-beta weighted",172.1225022574451,50.0
+BPM,long,fcc_ee_booster_pywit_model/data/bpm/Z_bpm_long_3mm.txt,"single element, location-beta weighted",2740.0,50.0
+BPM,x,fcc_ee_booster_pywit_model/data/bpm/Z_bpm_dipx_3mm.txt,"single element, location-beta weighted",2989.225364033652,50.0
+BPM,y,fcc_ee_booster_pywit_model/data/bpm/Z_bpm_dipy_3mm.txt,"single element, location-beta weighted",2943.03618331163,50.0
+Bellows,long,fcc_ee_booster_pywit_model/data/bellows/Z_bellows_long.txt,already integrated complete ring; NO extra count,1.0,50.0
+Bellows,x,fcc_ee_booster_pywit_model/data/bellows/Z_bellows_dipx.txt,already integrated complete ring; NO extra count,1.0,50.0
+Bellows,y,fcc_ee_booster_pywit_model/data/bellows/Z_bellows_dipy.txt,already integrated complete ring; NO extra count,1.0,50.0
+Kicker,long,fcc_ee_booster_pywit_model/data/kickers/Z_long_optimizedKicker.txt,"20 m source, scaled once to 4.18 m HEB system; local beta provisional",0.209,49.99593
+Kicker,x,fcc_ee_booster_pywit_model/data/kickers/Z_dipx_optimizedKicker.txt,"20 m source, scaled once to 4.18 m HEB system; local beta provisional",0.209,49.99593
+Kicker,y,fcc_ee_booster_pywit_model/data/kickers/Z_dipy_optimizedKicker.txt,"20 m source, scaled once to 4.18 m HEB system; local beta provisional",0.209,49.99593
+Wiggler,long,[external]/wiggler_config_A_budget_e-1_to_e11_ppd60.npz,"flat IW2D per metre, length/beta weighted once",60.300000000000004,100.0
+Wiggler,x,[external]/wiggler_config_A_budget_e-1_to_e11_ppd60.npz,"flat IW2D per metre, length/beta weighted once",4.117274541148826,100.0
+Wiggler,y,[external]/wiggler_config_A_budget_e-1_to_e11_ppd60.npz,"flat IW2D per metre, length/beta weighted once",3.4970204447934172,100.0
+RW,long,Gold Gaussian Cu + NEG TL (computed),"CST-equivalent reference q=-2.1043, one circular pipe length",89080.35599996046,10000.0
+RW,x,Gold Gaussian Cu + NEG TL (computed),"CST-equivalent reference q=-2.1043, one circular pipe length",89080.35599996046,10000.0
+RW,y,Gold Gaussian Cu + NEG TL (computed),"CST-equivalent reference q=-2.1043, one circular pipe length",89080.35599996046,10000.0

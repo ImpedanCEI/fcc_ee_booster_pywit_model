@@ -1,0 +1,1672 @@
+// PTC Tracking Macros
+// -> a set of macros for tracking dynamic and momentum aperture in MADX-PTC:
+// *************************************
+// * Feb 2018, ttydecks CERN BE-OP-LHC *
+// *************************************
+//
+// ** ALWAYS BE AWARE THAT WHEN CALLING MACROS WITH NEGATIVE NUMBERS THEY FAIL!!! ***
+// --> WORKAROUND:
+//     foo = -5.0;
+//     bar = -2.0;
+//     EXEC, somemacro(foo, bar);
+//
+// -------------------------------------------------------------------- 
+// CONTENT:
+//    * helpTM <-- display help, usage: EXEC, helpTM;
+//    * manglePTC
+//    * sP6D
+//    * sP6Dnr
+//    * sP5D
+//    * sP4D
+//    * da6D
+//    * da6Dr
+//    * da6Dnr
+//    * dafma
+//    * da4D
+//    * ma5D
+//    * ma6D
+//    * ma6Dr
+//    * ma6Dnr
+//    * mafma
+//    * sda6D
+//    * tw6D
+//    * tw6Dnr
+//    * tw4D
+//    * tw5D
+//    * wmacro
+//
+// -------------------------------------------------------------------- 
+
+// helpTM(): display documentation.
+
+  // usage:
+  // EXEC, helpTM;
+
+// -------------------------------------------------------------------- 
+
+// manglePTC(): change PTC default switches. Expert use!! 
+
+  // changes the default ptc layout settings. The default values for parameters are:
+  // PTC_CREATE_LAYOUT, MODEL=3,NST=3,METHOD=6,CLOSED_LAYOUT=true;
+
+  // usage:
+  // EXEC, manglePTC(newmodel, newsplit, newmethod);
+  // newmodel = new model to use (1, 2, or 3) (default 2)
+  // newsplit = set the splitting parameter depending on strength of magnet (default 0.001)
+  // newmethod = new method for integration to use (2, 4, or 6) (default 2)
+// -------------------------------------------------------------------- 
+
+// tw6D(): Run ptc_twiss incl. radiation effects (damping + quantum excitation).
+  
+  // Closed orbit will be searched. 
+  // usage:
+  // EXEC, tw6D(no,name);
+  // where:
+  // no = order of computation
+  // name = nametag for the output table (f.i. an error seed)
+
+// -------------------------------------------------------------------- 
+
+// tw6Dnr(): run ptc_twiss without radiation effects.
+  
+  // Closed orbit will be searched. 
+  // usage:
+  // EXEC, tw6Dnr(no,name);
+  // where:
+  // no = order of computation
+  // name = nametag for the output table (f.i. an error seed)
+
+// -------------------------------------------------------------------- 
+// tw5D(): run ptc_twiss with momentum deviation.
+  
+  // Closed orbit will be searched. 
+  // usage:
+  // EXEC, tw5D(deltap,no,name);
+  // where:
+  // deltap = inital momentum offset
+  // no = order of computation
+  // name = nametag for the output table (f.i. an error seed)
+
+// -------------------------------------------------------------------- 
+// tw4D(): run ptc_twiss.
+  
+  // Closed orbit will be searched. 
+  // usage:
+  // EXEC, tw4D(no,name);
+  // where:
+  // no = order of computation
+  // name = nametag for the output table (f.i. an error seed)
+
+// -------------------------------------------------------------------- 
+
+// sP6D(): Track single particle. Tracking with radiation effects (damping + quantum excitation).
+  
+  // Closed orbit will be searched. 
+  // usage:
+  // EXEC, sP6D(maxturns, x0, px0, y0, py0, t0, pt0, name);
+  // where:
+  // maxturns = maximum number of turns to track
+  // x0, px0, y0, py0, t0, pt0 = initial coordinates of particle
+  // name = nametag for the output table (f.i. an error seed)
+
+// -------------------------------------------------------------------- 
+
+// sP6Dnr(): Track single particle. Tracking without radiation effects.
+  
+  // Closed orbit will be searched. 
+  // usage:
+  // EXEC, sP6Dnr(maxturns, x0, px0, y0, py0, t0, pt0, name);
+  // where:
+  // maxturns = maximum number of turns to track
+  // x0, px0, y0, py0, t0, pt0 = initial coordinates of particle
+  // name = nametag for the output table (f.i. an error seed)
+
+// -------------------------------------------------------------------- 
+// sP5D(): Track single particle with momentum deviation.
+  
+  // Closed orbit will be searched. 
+  // usage:
+  // EXEC, sP5D(maxturns, x0, px0, y0, py0, t0, pt0, name);
+  // where:
+  // maxturns = maximum number of turns to track
+  // x0, px0, y0, py0, t0, pt0 = initial coordinates of particle
+  // name = nametag for the output table (f.i. an error seed)
+
+// -------------------------------------------------------------------- 
+// sP4D(): Track single particle.
+  
+  // Closed orbit will be searched. 
+  // usage:
+  // EXEC, sP4D(maxturns, x0, px0, y0, py0, t0, pt0, name);
+  // where:
+  // maxturns = maximum number of turns to track
+  // x0, px0, y0, py0, t0, pt0 = initial coordinates of particle
+  // name = nametag for the output table (f.i. an error seed)
+
+// -------------------------------------------------------------------- 
+
+// da6D(): efficient tracking of dynamic aperture. Useful for tracking many seeds. First a coarse scan is performed, then a fine scan depending on the outcome of the coarse scan. Tracking with radiation effects (damping + quantum excitation).
+  
+  // creates table da and writes table dynapname.txt. Tracking is done in full 6D including quantum excitation and radiation damping. Sequence must be loaded in advance! Closed orbit will be searched. 
+  // usage:
+  // EXEC, da6D(maxturns, rmin, rmax, phimin, phimax, rsteps, phisteps, ratioxy, name);
+  // where:
+  // maxturns = maximum number of turns to track
+  // rmin = minimum radius to start tracking (f.i. 0.0)
+  // rmax = maximum radius to track (f.i. 3.0E-2)
+  // phimin = minimum angle in terms of pi (f.i. 0.0)
+  // phimax = maximum angle in terms of pi (f.i. 1.0)
+  // rsteps = number of steps in r (f.i. 20) (N.B. this value is also used for the fine scan!)
+  // phisteps = number of steps in phi (f.i. 21)
+  // ratioxy = ratio of how r and phi are translated to x / y. y = ratioxy * x. 
+  // name = nametag for the output table (f.i. an error seed)
+   
+// -------------------------------------------------------------------- 
+
+// sda6D(): slow tracking of dynamic aperture on grid. Tracking with radiation effects (damping + quantum excitation).
+  
+  // creates tracking table for further analysis. Tracking is done in full 6D including quantum excitation and radiation damping. Sequence must be loaded in advance! Closed orbit will be searched. 
+  // usage:
+  // EXEC, sda6D(maxturns, xmin, xmax, ymin, ymax, xsteps, ysteps, name);
+  // where:
+  // maxturns = maximum number of turns to track
+  // xmin = minimum hor. amplitude to start tracking (f.i. 0.0)
+  // xmax = maximum hor. amplitude to track (f.i. 3.0E-2)
+  // ymin = minimum ver. amplitude to start tracking (f.i. 0.0)
+  // ymax = maximum ver. amplitude to track (f.i. 3.0E-2)
+  // xsteps = number of steps in r (f.i. 20) (N.B. this value is also used for the fine scan!)
+  // ysteps = number of steps in phi (f.i. 21)
+  // name = nametag for the output table (f.i. an error seed)
+   
+// --------------------------------------------------------------------
+
+// da6Dnr(): efficient tracking of dynamic aperture. Useful for tracking many seeds. First a coarse scan is performed, then a fine scan depending on the outcome of the coarse scan. Tracking without radiation effects.
+  
+  // creates table da and writes table dynapname.txt. Tracking is done in 6D without quantum excitation and without radiation damping. Sequence must be loaded in advance! Closed orbit will be searched. 
+  // usage:
+  // EXEC, da6Dnr(maxturns, rmin, rmax, phimin, phimax, rsteps, phisteps, ratioxy, name);
+  // where:
+  // maxturns = maximum number of turns to track
+  // rmin = minimum radius to start tracking (f.i. 0.0)
+  // rmax = maximum radius to track (f.i. 3.0E-2)
+  // phimin = minimum angle in terms of pi (f.i. 0.0)
+  // phimax = maximum angle in terms of pi (f.i. 1.0)
+  // rsteps = number of steps in r (f.i. 20) (N.B. this value is also used for the fine scan!)
+  // phisteps = number of steps in phi (f.i. 21)
+  // ratioxy = ratio of how r and phi are translated to x / y. y = ratioxy * x. 
+  // name = nametag for the output table (f.i. an error seed)
+   
+// --------------------------------------------------------------------
+// mafma(maxturns, sigx, nx, deltamin, deltamax, steps, ind0, ind1, jnd0, jnd1, name) : macro {
+
+
+// dafma(): tracking is performed without radiation damping to use data for frequency map analysis. Initial particle coordinates are scaled with sqrt-scaling in order to alter tune (depending on Action^2) linearly! This one is suited for splitting since it takes ind0 ind1 as arguments for the indices. 
+
+  // usage:
+  // EXEC, dafma(maxturns, sigx, sigy, nx, ny, steps, ind0, ind1, jnd0, jnd1, name);
+  // where:
+  // maxturns = number of turns to track
+  // sigx = horizontal beam size
+  // sigy = vertical beam size
+  // nx = maximum number of horizontal beamsizes for horizontal amplitude
+  // ny = maximum number of vertical beamsizes for vertical amplitude
+  // steps = number of steps between zero and hor. / vert. number of beamsizes
+  // ind0 = used for splitting the jobs, if splitted: ind0 is starting index for outer loop; if not splitted: ind0 must be 0
+  // ind1 = used for splitting the jobs, if splitted: ind1 is end (inclusive) index for outer loop; if not splitted: ind1 must be steps
+  // jnd0 = used for splitting the jobs, if splitted: jnd0 is starting index for inner loop; if not splitted: jnd0 must be 0
+  // jnd1 = used for splitting the jobs, if splitted: jnd1 is end (inclusive) index for inner loop; if not splitted: jnd1 must be steps
+  // name = nametag for output file: nameone
+
+// --------------------------------------------------------------------
+
+// da4D(): efficient tracking of 4D dynamic aperture, so tracking without radiation or cavity.
+  
+  // creates table da and writes table dynapname.txt. Tracking is done in 4D. Sequence must be loaded in advance! Closed orbit will be searched. 
+  // usage:
+  // EXEC, da4D(maxturns, rmin, rmax, phimin, phimax, rsteps, phisteps, ratioxy, name);
+  // where:
+  // maxturns = maximum number of turns to track
+  // rmin = minimum radius to start tracking (f.i. 0.0)
+  // rmax = maximum radius to track (f.i. 3.0E-2)
+  // phimin = minimum angle in terms of pi (f.i. 0.0)
+  // phimax = maximum angle in terms of pi (f.i. 1.0)
+  // rsteps = number of steps in r (f.i. 20) (N.B. this value is also used for the fine scan!)
+  // phisteps = number of steps in phi (f.i. 21)
+  // ratioxy = ratio of how r and phi are translated to x / y. y = ratioxy * x. 
+  // name = nametag for the output table (f.i. an error seed)
+
+// --------------------------------------------------------------------
+
+// ma5D(): efficient tracking of 5D momentum aperture (x/delta). Tracking without radiation or cavity. 
+
+// creates table da and writes table ma_name.txt. Closed orbit will be searched and used. 
+
+// usage:
+// EXEC, ma5D(maxturns, xmin, xmax, stepsx, deltamin, deltamax, stepsd, name);
+// where:
+// maxturns = maximum number of turns to track
+// xmin = minimum horizontal amplitude
+// xmax = maximum horizontal amplitude
+// stepsx = number of steps between xmin and xmax
+// deltamin = minimum energy offset
+// deltamax = maximum energy offset
+// stepsd = steps between deltamin and deltamax
+// name = nametag for the output table 
+
+// wmacro: not particularly interesting... used for tracking to access intermediate tables
+  
+    // macro for accessing tables with variables... should not be necessary, but is.
+    // usage: 
+    // EXEC, wmacro(table,variable,$index);
+  		   
+// --------------------------------------------------------------------
+PRINT, text=' ************************************************************************ ';
+PRINT, text=' ';
+PRINT, text='          ____ _____ ____   _                  _    _             ';
+PRINT, text='         |  _ \_   _/ ___| | |_ _ __ __ _  ___| | _(_)_ __   __ _ ';
+PRINT, text='         | |_) || || |     | __| "__/ _` |/ __| |/ / | "_ \ / _` |';
+PRINT, text='         |  __/ | || |___  | |_| | | (_| | (__|   <| | | | | (_| |';
+PRINT, text='         |_|    |_| \____|  \__|_|  \__,_|\___|_|\_\_|_| |_|\__, |';
+PRINT, text='                                                            |___/ ';
+PRINT, text='                        __  __                          ';
+PRINT, text='                       |  \/  | __ _  ___ _ __ ___  ___ ';
+PRINT, text='                       | |\/| |/ _` |/ __| "__/ _ \/ __|';
+PRINT, text='                       | |  | | (_| | (__| | | (_) \__ \ ';
+PRINT, text='                       |_|  |_|\__,_|\___|_|  \___/|___/';
+PRINT, text=' ';
+PRINT, text=' ************************************************************************ ';
+PRINT, text=' ';
+PRINT, text=' -> a set of macros for tracking dynamic and momentum aperture in MADX-PTC';
+PRINT, text=' ';
+PRINT, text=' *************************************';
+PRINT, text=' * Feb 2018, ttydecks CERN BE-OP-LHC *';
+PRINT, text=' *************************************';
+PRINT, text=' ';
+PRINT, text=' ** ALWAYS BE AWARE THAT WHEN CALLING MACROS WITH NEGATIVE NUMBERS THEY FAIL!!! ***';
+PRINT, text=' --> WORKAROUND:';
+PRINT, text='     foo = -5.0;';
+PRINT, text='     bar = -2.0;';
+PRINT, text='     EXEC, somemacro(foo, bar);';
+PRINT, text=' ';
+PRINT, text=' ------------------------------------------------------------------------- ';
+PRINT, text=' CONTENT:';
+PRINT, text='    * helpTM   <---> EXEC, helpTM;   <-- this will display documentation';
+PRINT, text='    * manglePTC';
+PRINT, text='    * sP6D';
+PRINT, text='    * sP6Dnr';
+PRINT, text='    * sP5D';
+PRINT, text='    * sP4D';
+PRINT, text='    * da6D';
+PRINT, text='    * da6Dnr';
+PRINT, text='    * dafma';
+PRINT, text='    * da4D';
+PRINT, text='    * ma5D';
+PRINT, text='    * mafma';
+PRINT, text='    * ma6D';
+PRINT, text='    * ma6Dnr';
+PRINT, text='    * sda6D';
+PRINT, text='    * tw6D';
+PRINT, text='    * tw6Dnr';
+PRINT, text='    * tw5D';
+PRINT, text='    * tw4D';
+PRINT, text='    * wmacro';
+PRINT, text=' ';
+PRINT, text=' ------------------------------------------------------------------------- ';
+
+ptcmodel = 2;
+ptcmethod = 2;
+ptcsplit = 0.001;
+
+helpTM : macro {
+  PRINT, text=' -------------------------------------------------------------------- ';
+  PRINT, text=' helpTM(): display documentation.';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, helTM;';
+  PRINT, text=' -------------------------------------------------------------------- ';
+  PRINT, text=' manglePTC(): change PTC default switches. Expert use!! ';
+  PRINT, text=' changes the default ptc layout settings. The default values for parameters are:';
+  PRINT, text=' PTC_CREATE_LAYOUT, MODEL=3,NST=3,METHOD=6,CLOSED_LAYOUT=true;';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, manglePTC(newmodel, newsplit, newmethod);';
+  PRINT, text=' newmodel = new model to use (1, 2, or 3) (default 2)';
+  PRINT, text=' newsplit = set the splitting parameter depending on strength of magnet (default 0.001)';
+  PRINT, text=' newmethod = new method for integration to use (2, 4, or 6) (default 2)';
+  PRINT, text=' -------------------------------------------------------------------- ';
+  PRINT, text=' sP6D(): Track single particle. Tracking with radiation effects (damping + quantum excitation).';  
+  PRINT, text=' Closed orbit will be searched. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, sP6D(maxturns, x0, px0, y0, py0, t0, pt0, name);';
+  PRINT, text=' where:';
+  PRINT, text=' maxturns = maximum number of turns to track';
+  PRINT, text=' x0/px0/y0/py0/t0/pt0 = initial coordinates';
+  PRINT, text=' name = nametag for the output table (f.i. an error seed)';
+  PRINT, text=' -------------------------------------------------------------------- ';
+  PRINT, text=' sP6Dnr(): Track single particle. Tracking without radiation effects.';
+  PRINT, text=' Closed orbit will be searched. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, sP6Dnr(maxturns, x0, px0, y0, py0, t0, pt0, name);';
+  PRINT, text=' where:';
+  PRINT, text=' maxturns = maximum number of turns to track';
+  PRINT, text=' x0/px0/y0/py0/t0/pt0 = initial coordinates';
+  PRINT, text=' name = nametag for the output table (f.i. an error seed)';
+  PRINT, text=' -------------------------------------------------------------------- ';
+  PRINT, text=' sP5D(): Track single particle with momentum deviation.';
+  PRINT, text=' Closed orbit will be searched. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, sP5D(maxturns, x0, px0, y0, py0, t0, pt0, name);';
+  PRINT, text=' where:';
+  PRINT, text=' maxturns = maximum number of turns to track';
+  PRINT, text=' x0/px0/y0/py0/t0/pt0 = initial coordinates';
+  PRINT, text=' name = nametag for the output table (f.i. an error seed)';
+  PRINT, text=' -------------------------------------------------------------------- ';
+  PRINT, text=' sP4D(): Track single particle.';
+  PRINT, text=' Closed orbit will be searched. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, sP4D(maxturns, x0, px0, y0, py0, t0, pt0, name);';
+  PRINT, text=' where:';
+  PRINT, text=' maxturns = maximum number of turns to track';
+  PRINT, text=' x0/px0/y0/py0/t0/pt0 = initial coordinates';
+  PRINT, text=' name = nametag for the output table (f.i. an error seed)';
+  PRINT, text=' -------------------------------------------------------------------- ';
+  PRINT, text=' da6D(): efficient tracking of dynamic aperture. Useful for tracking many seeds. First a coarse scan is performed, then a fine scan depending on the outcome of the coarse scan. Tracking with radiation effects (damping + quantum excitation).';
+  PRINT, text=' creates table da and writes table dynapname.txt. Tracking is done in full 6D including quantum excitation and radiation damping. Sequence must be loaded in advance! Closed orbit will be searched. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, da6D(maxturns, rmin, rmax, phimin, phimax, rsteps, phisteps, ratioxy, name);';
+  PRINT, text=' where:';
+  PRINT, text=' maxturns = maximum number of turns to track';
+  PRINT, text=' rmin = minimum radius to start tracking (f.i. 0.0)';
+  PRINT, text=' rmax = maximum radius to track (f.i. 3.0E-2)';
+  PRINT, text=' phimin = minimum angle in terms of pi (f.i. 0.0)';
+  PRINT, text=' phimax = maximum angle in terms of pi (f.i. 1.0)';
+  PRINT, text=' rsteps = number of steps in r (f.i. 20) (N.B. this value is also used for the fine scan!)';
+  PRINT, text=' phisteps = number of steps in phi (f.i. 21)';
+  PRINT, text=' ratioxy = ratio of how r and phi are translated to x / y. y = ratioxy * x. ';
+  PRINT, text=' name = nametag for the output table (f.i. an error seed)';
+  PRINT, text=' --------------------------------------------------------------------';
+  PRINT, text=' da6Dnr(): efficient tracking of dynamic aperture. Useful for tracking many seeds. First a coarse scan is performed, then a fine scan depending on the outcome of the coarse scan. Tracking without radiation effects.';
+  PRINT, text=' creates table da and writes table dynapname.txt. Tracking is done in 6D without quantum excitation and without radiation damping. Sequence must be loaded in advance! Closed orbit will be searched. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, da6Dnr(maxturns, rmin, rmax, phimin, phimax, rsteps, phisteps, ratioxy, name);';
+  PRINT, text=' where:';
+  PRINT, text=' maxturns = maximum number of turns to track';
+  PRINT, text=' rmin = minimum radius to start tracking (f.i. 0.0)';
+  PRINT, text=' rmax = maximum radius to track (f.i. 3.0E-2)';
+  PRINT, text=' phimin = minimum angle in terms of pi (f.i. 0.0)';
+  PRINT, text=' phimax = maximum angle in terms of pi (f.i. 1.0)';
+  PRINT, text=' rsteps = number of steps in r (f.i. 20) (N.B. this value is also used for the fine scan!)';
+  PRINT, text=' phisteps = number of steps in phi (f.i. 21)';
+  PRINT, text=' ratioxy = ratio of how r and phi are translated to x / y. y = ratioxy * x. ';
+  PRINT, text=' name = nametag for the output table (f.i. an error seed)';
+  PRINT, text=' --------------------------------------------------------------------';
+  PRINT, text=' dafma(): tracking is performed without radiation damping to use data for frequency map analysis. Initial particle coordinates are scaled with sqrt-scaling in order to alter tune (depending on Action^2) linearly! This one is suited for splitting since it takes ind0 ind1 as arguments for the indices. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, dafma(maxturns, sigx, sigy, nx, ny, steps, ind0, ind1, jnd0, jnd1, name);';
+  PRINT, text=' where:';
+  PRINT, text=' maxturns = number of turns to track';
+  PRINT, text=' sigx = horizontal beam size';
+  PRINT, text=' sigy = vertical beam size';
+  PRINT, text=' nx = maximum number of horizontal beamsizes for horizontal amplitude';
+  PRINT, text=' ny = maximum number of vertical beamsizes for vertical amplitude';
+  PRINT, text=' steps = number of steps between zero and hor. / vert. number of beamsizes';
+  PRINT, text=' ind0 = used for splitting the jobs, if splitted: ind0 is starting index for outer loop; if not splitted: ind0 must be 0';
+  PRINT, text=' ind1 = used for splitting the jobs, if splitted: ind1 is end (inclusive) index for outer loop; if not splitted: ind1 must be steps';
+  PRINT, text=' jnd0 = used for splitting the jobs, if splitted: jnd0 is starting index for inner loop; if not splitted: jnd0 must be 0';
+  PRINT, text=' jnd1 = used for splitting the jobs, if splitted: jnd1 is end (inclusive) index for inner loop; if not splitted: jnd1 must be steps';
+  PRINT, text=' name = nametag for output file: nameone';
+  PRINT, text=' --------------------------------------------------------------------';
+  PRINT, text=' da4D(): efficient tracking of 4D dynamic aperture, so tracking without radiation or cavity.';
+  PRINT, text=' creates table da and writes table dynapname.txt. Tracking is done in 4D. Sequence must be loaded in advance! Closed orbit will be searched. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, da4D(maxturns, rmin, rmax, phimin, phimax, rsteps, phisteps, ratioxy, name);';
+  PRINT, text=' where:';
+  PRINT, text=' maxturns = maximum number of turns to track';
+  PRINT, text=' rmin = minimum radius to start tracking (f.i. 0.0)';
+  PRINT, text=' rmax = maximum radius to track (f.i. 3.0E-2)';
+  PRINT, text=' phimin = minimum angle in terms of pi (f.i. 0.0)';
+  PRINT, text=' phimax = maximum angle in terms of pi (f.i. 1.0)';
+  PRINT, text=' rsteps = number of steps in r (f.i. 20) (N.B. this value is also used for the fine scan!)';
+  PRINT, text=' phisteps = number of steps in phi (f.i. 21)';
+  PRINT, text=' ratioxy = ratio of how r and phi are translated to x / y. y = ratioxy * x. ';
+  PRINT, text=' name = nametag for the output table (f.i. an error seed)';
+  PRINT, text=' --------------------------------------------------------------------';
+  PRINT, text=' ma5D(): efficient tracking of 5D momentum aperture (x/delta). Tracking without radiation or cavity. ';
+  PRINT, text=' creates table da and writes table ma_name.txt. Closed orbit will be searched and used. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, ma5D(maxturns, xmin, xmax, stepsx, deltamin, deltamax, stepsd, name);';
+  PRINT, text=' where:';
+  PRINT, text=' maxturns = maximum number of turns to track';
+  PRINT, text=' xmin = minimum horizontal amplitude';
+  PRINT, text=' xmax = maximum horizontal amplitude';
+  PRINT, text=' stepsx = number of steps between xmin and xmax';
+  PRINT, text=' deltamin = minimum energy offset';
+  PRINT, text=' deltamax = maximum energy offset';
+  PRINT, text=' stepsd = steps between deltamin and deltamax';
+  PRINT, text=' name = nametag for the output table ';
+  PRINT, text=' --------------------------------------------------------------------';
+  PRINT, text=' mafma(): tracking is performed without radiation damping to use data for frequency map analysis. This one is suited for splitting since it takes ind0 ind1 as arguments for the indices. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, mafma(maxturns, sigx, nx, deltamin, deltamax steps, ind0, ind1, jnd0, jnd1, name);';
+  PRINT, text=' where:';
+  PRINT, text=' maxturns = number of turns to track';
+  PRINT, text=' sigx = horizontal beam size';
+  PRINT, text=' nx = maximum number of horizontal beamsizes for horizontal amplitude';
+  PRINT, text='deltamin = minimum energy deviation';
+  PRINT, text='deltamax = maximum energy deviation';
+  PRINT, text=' steps = number of steps between zero and hor. number of beamsizes / energy deviations';
+  PRINT, text=' ind0 = used for splitting the jobs, if splitted: ind0 is starting index for outer loop; if not splitted: ind0 must be 0';
+  PRINT, text=' ind1 = used for splitting the jobs, if splitted: ind1 is end (inclusive) index for outer loop; if not splitted: ind1 must be steps';
+  PRINT, text=' jnd0 = used for splitting the jobs, if splitted: jnd0 is starting index for inner loop; if not splitted: jnd0 must be 0';
+  PRINT, text=' jnd1 = used for splitting the jobs, if splitted: jnd1 is end (inclusive) index for inner loop; if not splitted: jnd1 must be steps';
+  PRINT, text=' name = nametag for output file: nameone';
+  PRINT, text=' --------------------------------------------------------------------';
+  PRINT, text=' ma6D(): efficient tracking of 6D momentum aperture (x/delta). Tracking with radiation and quantum excitation. ';
+  PRINT, text=' creates table da and writes table ma_name.txt. Closed orbit will be searched and used. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, ma6D(maxturns, xmin, xmax, stepsx, deltamin, deltamax, stepsd, name);';
+  PRINT, text=' where:';
+  PRINT, text=' maxturns = maximum number of turns to track';
+  PRINT, text=' xmin = minimum horizontal amplitude';
+  PRINT, text=' xmax = maximum horizontal amplitude';
+  PRINT, text=' stepsx = number of steps between xmin and xmax';
+  PRINT, text=' deltamin = minimum energy offset';
+  PRINT, text=' deltamax = maximum energy offset';
+  PRINT, text=' stepsd = steps between deltamin and deltamax';
+  PRINT, text=' name = nametag for the output table ';
+  PRINT, text=' --------------------------------------------------------------------';
+  PRINT, text=' ma6Dnr(): efficient tracking of 6D momentum aperture (x/delta). Tracking without radiation. ';
+  PRINT, text=' creates table da and writes table ma_name.txt. Closed orbit will be searched and used. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, ma6Dnr(maxturns, xmin, xmax, stepsx, deltamin, deltamax, stepsd, name);';
+  PRINT, text=' where:';
+  PRINT, text=' maxturns = maximum number of turns to track';
+  PRINT, text=' xmin = minimum horizontal amplitude';
+  PRINT, text=' xmax = maximum horizontal amplitude';
+  PRINT, text=' stepsx = number of steps between xmin and xmax';
+  PRINT, text=' deltamin = minimum energy offset';
+  PRINT, text=' deltamax = maximum energy offset';
+  PRINT, text=' stepsd = steps between deltamin and deltamax';
+  PRINT, text=' name = nametag for the output table ';
+  PRINT, text=' --------------------------------------------------------------------';
+  PRINT, text=' sda6D(): slow tracking of dynamic aperture on grid. Tracking with radiation effects (damping + quantum excitation).';
+  PRINT, text=' creates tracking table for further analysis. Tracking is done in full 6D including quantum excitation and radiation damping. Sequence must be loaded in advance! Closed orbit will be searched. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, sda6D(maxturns, xmin, xmax, ymin, ymax, xsteps, ysteps, name);';
+  PRINT, text=' where:';
+  PRINT, text=' maxturns = maximum number of turns to track';
+  PRINT, text=' xmin = minimum hor. amplitude to start tracking (f.i. 0.0)';
+  PRINT, text=' xmax = maximum hor. amplitude to track (f.i. 3.0E-2)';
+  PRINT, text=' ymin = minimum ver. amplitude to start tracking (f.i. 0.0)';
+  PRINT, text=' ymax = maximum ver. amplitude to track (f.i. 3.0E-2)';
+  PRINT, text=' xsteps = number of steps in r (f.i. 20) (N.B. this value is also used for the fine scan!)';
+  PRINT, text=' ysteps = number of steps in phi (f.i. 21)';
+  PRINT, text=' name = nametag for the output table (f.i. an error seed)';
+  PRINT, text=' --------------------------------------------------------------------';
+  PRINT, text=' tw6D(): run ptc_twiss incl. radiation effects (damping + quantum excitation).';
+  PRINT, text=' Closed orbit will be searched. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, tw6D(no, name);';
+  PRINT, text=' where:';
+  PRINT, text=' no = order of computation (f.i. 2)';
+  PRINT, text=' name = nametag for the output table (f.i. an error seed)';
+  PRINT, text=' -------------------------------------------------------------------- ';
+  PRINT, text=' tw6Dnr(): run ptc_twiss excl. radiation effects.';
+  PRINT, text=' Closed orbit will be searched. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, tw6Dnr(no, name);';
+  PRINT, text=' where:';
+  PRINT, text=' no = order of computation (f.i. 2)';
+  PRINT, text=' name = nametag for the output table (f.i. an error seed)';
+  PRINT, text=' -------------------------------------------------------------------- ';
+  PRINT, text=' tw5D(): run ptc_twiss with momentum offset.';
+  PRINT, text=' Closed orbit will be searched. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, tw5D(deltap, no, name);';
+  PRINT, text=' where:';
+  PRINT, text=' deltap = momentum deviation';
+  PRINT, text=' no = order of computation (f.i. 2)';
+  PRINT, text=' name = nametag for the output table (f.i. an error seed)';
+  PRINT, text=' -------------------------------------------------------------------- ';
+  PRINT, text=' tw4D(): run ptc_twiss.';
+  PRINT, text=' Closed orbit will be searched. ';
+  PRINT, text=' usage:';
+  PRINT, text=' EXEC, tw4D(no, name);';
+  PRINT, text=' where:';
+  PRINT, text=' no = order of computation (f.i. 2)';
+  PRINT, text=' name = nametag for the output table (f.i. an error seed)';
+  PRINT, text=' -------------------------------------------------------------------- ';
+  PRINT, text=' wmacro: not particularly interesting... used for tracking to access intermediate tables';
+  PRINT, text=' macro for accessing tables with variables... should not be necessary, but is.';
+  PRINT, text=' usage: ';
+  PRINT, text=' EXEC, wmacro(table,variable,$index);';
+  PRINT, text=' --------------------------------------------------------------------';
+}
+
+manglePTC(newmodel, newsplit, newmethod) : macro {
+  IF (newmodel > 0 && newmodel < 4) {
+    PRINTf, text=' ptc model set to %g', value=newmodel;
+    ptcmodel = newmodel;
+  }
+  IF (newsplit > 0) {
+    PRINTf, text=' ptc nst set to %g', value=newsplit;
+    ptcsplit = newsplit;    
+  }
+  IF ((newmethod == 2 || newmethod == 4) || newmethod == 6) {
+    PRINTf, text=' ptc method set to %g', value=newmethod;
+    ptcmethod = newmethod;    
+  }
+}
+
+wmacro(stable, var, no) : macro {
+  val = table(stable, var, no);
+}
+
+tw5D(deltaptw5D, notw5D, nntw5D) : macro {
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=false,stochastic=false,envelope=false;
+    PTC_TWISS, ICASE=5, CLOSED_ORBIT, DELTAP = deltaptw5D, NO=notw5D, RMATRIX, FILE=ptc_twiss_nntw5D.out;
+  PTC_END;
+}
+
+tw6Dnr(notw6Dnr, nntw6Dnr) : macro {
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=false,stochastic=false,envelope=false;
+    PTC_TWISS, ICASE=6, CLOSED_ORBIT, NO=notw6Dnr, RMATRIX, FILE=ptc_twiss_nntw6Dnr.out;
+  PTC_END;
+}
+
+tw4D(notw4D, nntw4D) : macro {
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=false,stochastic=false,envelope=false;
+    PTC_TWISS, ICASE=4, CLOSED_ORBIT, NO=notw4D, RMATRIX, FILE=ptc_twiss_nntw4D.out;
+  PTC_END;
+}
+
+tw6D(notw6D, nntw6D) : macro {
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=true,stochastic=true,envelope=true;
+    PTC_TWISS, ICASE=6, CLOSED_ORBIT, NO=notw6D, RMATRIX, FILE=ptc_twiss_nntw6D.out;
+  PTC_END;
+}
+
+ma5D(ntma5D, xima5D, xama5D, nxma5D, dima5D, dama5D, ndma5D, nnma5D) : macro {
+  CREATE, table=dac, column=xsurv,dsurv;
+  CREATE, table=da, column=X0surv, d0surv;
+  // first coarse scan:
+  xsurv = 0;
+  dsurv = 0;
+
+  X0 := xima5D + abs(i) * (xama5D-xima5D)/nxma5D;
+  delta := dima5D + abs(j) * (dama5D-dima5D)/ndma5D;
+
+  j = 0;
+  while (j < ndma5D+1) {	
+
+    PTC_CREATE_UNIVERSE;
+      PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+      PTC_ALIGN;
+      PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=false,stochastic=false,envelope=false;
+      i = 1;
+      while (i < nxma5D+1) {
+	PTC_START, X=X0, PX=0.0, Y=0.0, PY=0.0, T=0.0, PT=delta;
+	i = i + 1;
+      }
+      PRINT, text="******/////////******";
+      PRINTF, text="coarse scan: %g/%g", value=j, ndma5D;
+      PRINT, text="******/////////******";
+      PTC_TRACK, ICASE=5, CLOSED_ORBIT, TURNS=ntma5D;
+      PTC_TRACK_END;
+ 
+      k = nxma5D + 1;
+      while(k < 2*nxma5D+1) {
+	EXEC, wmacro(tracksumm,turn,$k);
+	if (val == ntma5D) {
+	  xsurv = xima5D + (xama5D-xima5D)/nxma5D * (k-nxma5D);
+	}   
+	if (val <> ntma5D) {
+	  k = 2 * nxma5D;
+	}
+	k = k + 1;
+      }
+    PTC_END;
+ 
+    dsurv = delta;
+    FILL, table=dac;
+    j = j + 1;
+  }
+
+  WRITE, table=dac;
+
+  PRINT, text="doing fine scan now...";
+
+  xmino = xima5D;
+  xostep = (xama5D-xima5D)/nxma5D;
+
+  j = 0;
+  while (j < ndma5D+1) {	
+    k = j + 1;
+    EXEC, wmacro(dac,XSURV,$k);
+    xima5D = val;
+    xama5D = xima5D + xostep;
+  
+    X0 := xima5D + abs(i) * (xama5D-xima5D)/nxma5D;
+    delta := dima5D + abs(j) * (dama5D-dima5D)/ndma5D;
+
+    PTC_CREATE_UNIVERSE;
+      PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+      PTC_ALIGN;
+      PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=false,stochastic=false,envelope=false;
+      i = 1;
+      while (i < nxma5D+1) {
+	PTC_START, X=X0, PX=0.0, Y=0.0, PY=0.0, T=0.0, PT=delta;
+	i = i + 1;
+      }
+      PRINT, text="******/////////******";
+      PRINTF, text="coarse scan: %g/%g", value=j, ndma5D;
+      PRINT, text="******/////////******";
+      PTC_TRACK, ICASE=5, CLOSED_ORBIT, TURNS=ntma5D;
+      PTC_TRACK_END;
+ 
+      k = nxma5D + 1;
+      while(k < 2*nxma5D+1) {
+	EXEC, wmacro(tracksumm,turn,$k);
+	if (val == ntma5D) {
+	  xsurv = xima5D + (xama5D-xima5D)/nxma5D * (k-nxma5D);
+	}
+	if (val <> ntma5D) {
+	  k = 2 * nxma5D;
+	}    
+	k = k + 1;
+      }
+ 
+      X0surv = xsurv;
+      d0surv = delta;
+
+    PTC_END;
+
+    FILL, table=da;
+  
+    j = j + 1;
+  }
+
+  WRITE, table=dac;
+  WRITE, table=da;
+  WRITE, table=da, file=ma_nnma5D.txt;
+
+}
+
+ma6D(ntma6D, xima6D, xama6D, nxma6D, dima6D, dama6D, ndma6D, nnma6D) : macro {
+  CREATE, table=mac, column=dsurv,xsurv;
+  CREATE, table=ma, column=d0surv, x0surv;
+  // first coarse scan:
+  xsurv = 0;
+  dsurv = 0;
+
+  X0 := xima6D + abs(i) * (xama6D-xima6D)/(nxma6D-1);
+  delta := dima6D + abs(j) * (dama6D-dima6D)/(ndma6D-1);
+
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=false,totalpath=false,fringe=true,radiation=true,stochastic=true,envelope=true, seed=1;
+    PTC_TWISS, ICASE=6, CLOSED_ORBIT, NO=2, RMATRIX;
+
+    j = 0;
+    while (j < ndma6D) {	
+
+      i = 0;
+      while (i < nxma6D) {
+	PTC_START, X=X0, PX=0.0, Y=0.0, PY=0.0, T=0.0, PT=delta;
+	i = i + 1;
+      }
+      j = j + 1;
+    }
+    PTC_TRACK, ICASE=6, CLOSED_ORBIT, RADIATION,TURNS=ntma6D;
+    PTC_TRACK_END;
+  PTC_END;
+
+  j = 0;
+  while (j < ndma6D) {
+    xsurv = 0.0;
+    kmin = ndma6D * nxma6D + j * nxma6D + 1;
+    kmax = ndma6D * nxma6D + (j+1) * nxma6D + 1;
+    k  = kmin;
+    while(k < kmax) {
+      EXEC, wmacro(tracksumm,turn,$k);
+      if (val == ntma6D) {
+	xsurv = xima6D + (xama6D-xima6D)/(nxma6D-1) * (k-kmin);
+      }   
+      if (val <> ntma6D) {
+	k = kmax;
+      }   
+      k = k + 1;
+    }
+ 
+    dsurv = delta;
+    FILL, table=mac;
+    j = j + 1;
+  }
+
+  WRITE, table=mac;
+
+  PRINT, text="doing fine scan now...";
+
+  xmino = xima6D;
+  xostep = (xama6D-xima6D)/(nxma6D-1);
+
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=false,totalpath=false,fringe=true,radiation=true,stochastic=true,envelope=true, seed=1;
+    PTC_TWISS, ICASE=6, CLOSED_ORBIT, NO=2, RMATRIX;
+    j = 0;
+    while (j < ndma6D) {	
+      k = j + 1;
+      EXEC, wmacro(mac,XSURV,$k);
+      xima6D = val;
+      xama6D = xima6D + xostep;
+  
+      X0 := xima6D + abs(i) * (xama6D-xima6D)/(nxma6D-1);
+      delta := dima6D + abs(j) * (dama6D-dima6D)/(ndma6D-1);
+
+      i = 0;
+      while (i < nxma6D) {
+	PTC_START, X=X0, PX=0.0, Y=0.0, PY=0.0, T=0.0, PT=delta;
+	i = i + 1;
+      }
+      j = j + 1;
+    }
+    PTC_TRACK, ICASE=6, CLOSED_ORBIT, RADIATION, TURNS=ntma6D;
+    PTC_TRACK_END;
+  PTC_END;
+ 
+  j = 0;
+  while (j < ndma6D) {
+
+    m = j + 1;
+    EXEC, wmacro(mac, XSURV, $m);
+    xsurv = val;
+    xima6D = val;
+    xama6D = xima6D + xostep;
+    kmin = ndma6D * nxma6D + j * nxma6D + 1;
+    kmax = ndma6D * nxma6D + (j+1) * nxma6D + 1;
+    k = kmin;
+    while(k < kmax) {
+      EXEC, wmacro(tracksumm,turn,$k);
+      if (val == ntma6D) {
+	xsurv = xima6D + (xama6D-xima6D)/(nxma6D-1) * (k-kmin);
+      }
+      if (val <> ntma6D) {
+	k = kmax;
+      }   
+      k = k + 1;
+    }
+ 
+    x0surv=xsurv;
+    d0surv=delta;
+
+    FILL, table=ma;
+  
+    j = j + 1;
+  }
+
+  WRITE, table=mac;
+  WRITE, table=ma;
+  WRITE, table=ma, file=maper_nnma6D.txt;
+}
+
+ma6Dr(ntma6Dr, xima6Dr, xama6Dr, nxma6Dr, dima6Dr, dama6Dr, ndma6Dr, nnma6Dr) : macro {
+  CREATE, table=mac, column=dsurv,xsurv;
+  CREATE, table=ma, column=d0surv, x0surv;
+  // first coarse scan:
+  xsurv = 0;
+  dsurv = 0;
+
+  X0 := xima6Dr + abs(i) * (xama6Dr-xima6Dr)/(nxma6Dr-1);
+  delta := dima6Dr + abs(j) * (dama6Dr-dima6Dr)/(ndma6Dr-1);
+
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=false,totalpath=false,fringe=true,radiation=true,stochastic=false,envelope=false, seed=1;
+    PTC_TWISS, ICASE=6, CLOSED_ORBIT, NO=2, RMATRIX;
+    j = 0;
+    while (j < ndma6Dr) {	
+
+      i = 0;
+      while (i < nxma6Dr) {
+	PTC_START, X=X0, PX=0.0, Y=0.0, PY=0.0, T=0.0, PT=delta;
+	i = i + 1;
+      }
+      j = j + 1;
+    }
+    PTC_TRACK, ICASE=6, CLOSED_ORBIT, RADIATION,TURNS=ntma6Dr;
+    PTC_TRACK_END;
+  PTC_END;
+
+  j = 0;
+  while (j < ndma6Dr) {
+    xsurv = 0.0;
+    kmin = ndma6Dr * nxma6Dr + j * nxma6Dr + 1;
+    kmax = ndma6Dr * nxma6Dr + (j+1) * nxma6Dr + 1;
+    k = kmin;
+    while(k < kmax) {
+      EXEC, wmacro(tracksumm,turn,$k);
+      if (val == ntma6Dr) {
+	xsurv = xima6Dr + (xama6Dr-xima6Dr)/(nxma6Dr-1) * (k-kmin);
+      }   
+      if (val <> ntma6Dr) {
+	k = kmax;
+      }   
+      k = k + 1;
+    }
+ 
+    dsurv = delta;
+    FILL, table=mac;
+    j = j + 1;
+  }
+
+  WRITE, table=mac;
+
+  PRINT, text="doing fine scan now...";
+
+  xmino = xima6Dr;
+  xostep = (xama6Dr-xima6Dr)/(nxma6Dr-1);
+
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=false,totalpath=false,fringe=true,radiation=true,stochastic=false,envelope=false, seed=1;
+    PTC_TWISS, ICASE=6, CLOSED_ORBIT, NO=2, RMATRIX;
+    j = 0;
+    while (j < ndma6Dr) {	
+      k = j + 1;
+      EXEC, wmacro(mac,XSURV,$k);
+      xima6Dr = val;
+      xama6Dr = xima6Dr + xostep;
+      X0 := xima6Dr + abs(i) * (xama6Dr-xima6Dr)/(nxma6Dr-1);
+      delta := dima6Dr + abs(j) * (dama6Dr-dima6Dr)/(ndma6Dr-1);
+      i = 0;
+      while (i < nxma6Dr) {
+	PTC_START, X=X0, PX=0.0, Y=0.0, PY=0.0, T=0.0, PT=delta;
+	i = i + 1;
+      }
+      j = j + 1;
+    }
+    PTC_TRACK, ICASE=6, CLOSED_ORBIT, RADIATION, TURNS=ntma6Dr;
+    PTC_TRACK_END;
+  PTC_END;
+ 
+  j = 0;
+  while (j < ndma6Dr) {
+    m = j + 1;
+    EXEC, wmacro(mac, XSURV, $m);
+    xsurv = val;
+    xima6Dr = val;
+    xama6Dr = xima6Dr + xostep;
+    kmin = ndma6Dr * nxma6Dr + j * nxma6Dr + 1;
+    kmax = ndma6Dr * nxma6Dr + (j+1) * nxma6Dr + 1;
+    k = kmin;
+    while(k < kmax) {
+      EXEC, wmacro(tracksumm,turn,$k);
+      if (val == ntma6Dr) {
+	xsurv = xima6Dr + (xama6Dr-xima6Dr)/(nxma6Dr-1) * (k-kmin);
+      }
+      if (val <> ntma6Dr) {
+	k = kmax;
+      }   
+      k = k + 1;
+    }
+ 
+    x0surv = xsurv;
+    d0surv = delta;
+
+    FILL, table=ma;
+  
+    j = j + 1;
+  }
+
+  WRITE, table=mac;
+  WRITE, table=ma;
+  WRITE, table=ma, file=maper_nnma6Dr.txt;
+}
+
+ma6Dnr(ntma6Dnr, xima6Dnr, xama6Dnr, nxma6Dnr, dima6Dnr, dama6Dnr, ndma6Dnr, nnma6Dnr) : macro {
+  CREATE, table=dac, column=xsurv,dsurv;
+  CREATE, table=da, column=X0surv, d0surv;
+  // first coarse scan:
+
+  xsurv = 0;
+  dsurv = 0;
+
+  X0 := xima6Dnr + abs(i) * (xama6Dnr-xima6Dnr)/nxma6Dnr;
+  delta := dima6Dnr + abs(j) * (dama6Dnr-dima6Dnr)/ndma6Dnr;
+
+  j = 0;
+  while (j < ndma6Dnr+1) {	
+    xsurv = 0.0;
+    PTC_CREATE_UNIVERSE;
+      PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+      PTC_ALIGN;
+      PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=false,stochastic=false,envelope=false;
+      i = 1;
+      while (i < nxma6Dnr+1) {
+	PTC_START, X=X0, PX=0.0, Y=0.0, PY=0.0, T=0.0, PT=delta;
+	i = i + 1;
+      }
+      PRINT, text="******/////////******";
+      PRINTF, text="coarse scan: %g/%g", value=j, ndma6Dnr;
+      PRINT, text="******/////////******";
+      PTC_TRACK, ICASE=6, CLOSED_ORBIT, TURNS=ntma6Dnr;
+      PTC_TRACK_END;
+ 
+      k = nxma6Dnr + 1;
+      while(k < 2*nxma6Dnr+1) {
+	EXEC, wmacro(tracksumm,turn,$k);
+	if (val == ntma6Dnr) {
+	  xsurv = xima6Dnr + (xama6Dnr-xima6Dnr)/nxma6Dnr * (k-nxma6Dnr);
+	}   
+	if (val <> ntma6Dnr) {
+	  k = 2 * nxma6Dnr;
+	}  
+	k = k + 1;
+      }
+ 
+    PTC_END;
+ 
+    dsurv = delta;
+    FILL, table = dac;
+    j = j + 1;
+  }
+
+  WRITE, table=dac;
+
+  PRINT, text="doing fine scan now...";
+
+  xmino = xima6Dnr;
+  xostep = (xama6Dnr-xima6Dnr)/nxma6Dnr;
+
+  j = 0;
+  while (j < ndma6Dnr+1) {	
+    k = j + 1;
+    EXEC, wmacro(dac,XSURV,$k);
+    xsurv = val;
+    xima6Dnr = val;
+
+    xama6Dnr = xima6Dnr + xostep;
+  
+    X0 := xima6Dnr + abs(i) * (xama6Dnr-xima6Dnr)/nxma6Dnr;
+    delta := dima6Dnr + abs(j) * (dama6Dnr-dima6Dnr)/ndma6Dnr;
+
+    PTC_CREATE_UNIVERSE;
+      PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+      PTC_ALIGN;
+      PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=false,stochastic=false,envelope=false;
+      i = 1;
+      while (i < nxma6Dnr+1) {
+	PTC_START, X=X0, PX=0.0, Y=0.0, PY=0.0, T=0.0, PT=delta;
+	i = i + 1;
+      }
+      PRINT, text="******/////////******";
+      PRINTF, text="coarse scan: %g/%g", value=j, ndma6Dnr;
+      PRINT, text="******/////////******";
+      PTC_TRACK, ICASE=6, CLOSED_ORBIT, TURNS=ntma6Dnr;
+      PTC_TRACK_END;
+ 
+      k = nxma6Dnr + 1;
+      while(k < 2*nxma6Dnr+1) {
+	EXEC, wmacro(tracksumm,turn,$k);
+	if (val == ntma6Dnr) {
+	  xsurv = xima6Dnr + (xama6Dnr-xima6Dnr)/nxma6Dnr * (k-nxma6Dnr);
+	}
+	if (val <> ntma6Dnr) {
+	  k = 2 * nxma6Dnr;
+	}  
+	k = k + 1;
+      }
+ 
+      X0surv = xsurv;
+      d0surv = delta;
+    PTC_END;
+
+    FILL, table=da;
+  
+    j = j + 1;
+  }
+
+  WRITE, table=dac;
+  WRITE, table=da;
+  WRITE, table=da, file=ma_nnma6Dnr.txt;
+
+}
+
+dafma(ntdaf, sxdaf, sydaf, nxdaf, nydaf, nsdaf, i0daf, i1daf, j0daf, j1daf, nndaf) : macro {
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=false,stochastic=false,envelope=false;
+    i = 0;
+    j = 0;
+    X0 := sxdaf * nxdaf * sqrt(abs(i)/nsdaf);
+    Y0 := sydaf * nydaf * sqrt(abs(j)/nsdaf);
+    i = i0daf;
+    while (i < i1daf+1) {
+      j = j0daf;
+      while (j < j1daf+1) {
+	PTC_START, X=X0+1.0E-9, PX=0.0, Y=Y0+1.0E-9, PY=0.0, T=0.0, PT=0.0;
+	j = j + 1;
+      }
+      i = i + 1;
+    }
+
+    PTC_TRACK, ICASE=4, CLOSED_ORBIT, TURNS=ntdaf, DUMP, ONETABLE, FILE=nndaf;
+    PTC_TRACK_END;
+  PTC_END;
+}
+
+mafma(ntmaf, sxmaf, nxmaf, dimaf, damaf, nsmaf, i0maf, i1maf, j0maf, j1maf, nnmaf) : macro {
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=false,stochastic=false,envelope=false;
+    i = 0;
+    j = 0;
+    X0 := sxmaf * nxmaf * abs(i)/nsmaf;
+    delta:=dimaf + abs(j) * (damaf-dimaf)/nsmaf;
+
+    i = i0maf;
+    while (i < i1maf+1) {
+      j = j0maf;
+      while (j < j1maf+1) {
+	PTC_START, X=X0+1.0E-9, PX=0.0, Y=1.0E-9, PY=0.0, T=0.0, PT=delta;
+	j = j + 1;
+      }
+      i = i + 1;
+    }
+
+    PTC_TRACK, ICASE=5, CLOSED_ORBIT, TURNS=ntmaf, DUMP, ONETABLE, FILE=nnmaf;
+    PTC_TRACK_END;
+  PTC_END;
+}
+
+
+da4D(ntda4D, rida4D, rada4D, pida4D, pada4D, srda4D, spda4D, rxyda4D, nnda4D) : macro {
+  CREATE, table=dac, column=phisurv,rsurv;
+  CREATE, table=da2, column=phisurv,rsurv;
+  CREATE, table=da, column=X0surv, Y0surv;
+  rsurv = 0;
+  phisurv = 0;
+  j = 0;
+  i = 0;
+  X0 := (rida4D + (rada4D-rida4D)/(srda4D-1) * abs(i)) * cos((pida4D + (pada4D-pida4D)/(spda4D-1) * abs(j)) * pi);
+  Y0 := rxyda4D * (rida4D + (rada4D-rida4D)/(srda4D-1) * abs(i)) * sin((pida4D + (pada4D-pida4D)/(spda4D-1) * abs(j)) * pi);
+
+  PRINT, text="******/////////******";
+  PRINT, text="coarse scan";
+  PRINT, text="******/////////******";
+ 
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=false,stochastic=false,envelope=false, seed=1;
+    j = 0;
+    while (j < spda4D) {	
+      i = 0;
+      while (i < srda4D) {
+	PTC_START, X=X0, PX=0.0, Y=Y0, PY=0.0, T=0.0, PT=0.0;
+	i = i + 1;
+      }
+      j = j + 1;
+    }
+    PTC_TRACK, ICASE=4, CLOSED_ORBIT,TURNS=ntda4D;
+    PTC_TRACK_END;
+  PTC_END;
+
+  j = 0;
+  while (j < spda4D) {
+    rsurv = 0.0;
+    kmin = spda4D * srda4D + j * srda4D + 1;
+    kmax = spda4D * srda4D + (j+1) * srda4D + 1;
+    k = kmin;
+    while(k < kmax) {
+      EXEC, wmacro(tracksumm,turn,$k);
+      if (val == ntda4D) {
+	rsurv = rida4D + (rada4D-rida4D)/(srda4D-1) * (k-kmin);
+      }
+      if (val <> ntda4D) {
+	k = kmax;
+      }
+      k = k + 1;
+    }
+
+    phisurv = pida4D + (pada4D-pida4D)/(spda4D-1) * abs(j);
+    FILL, table=dac;
+    j = j + 1;
+  } 
+
+  WRITE, table=dac;
+  PRINT, text="doing fine scan now...";
+
+  rio = rida4D;
+  rostep = (rada4D-rida4D)/(srda4D-1);
+  j = 0;
+  i = 0;
+  X0 := (rida4D + (rada4D-rida4D)/(srda4D-1) * abs(i)) * cos((pida4D + (pada4D-pida4D)/(spda4D-1) * abs(j)) * pi);
+  Y0 := rxyda4D * (rida4D + (rada4D-rida4D)/(srda4D-1) * abs(i)) * sin((pida4D + (pada4D-pida4D)/(spda4D-1) * abs(j)) * pi);
+
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=false,stochastic=false,envelope=false, seed=1;
+    j = 0;
+    while (j < spda4D) {	
+      k = j + 1;
+      EXEC, wmacro(dac,RSURV,$k);
+      rsurv = val;
+      rida4D = val;
+      rada4D = rida4D + rostep;
+
+      i = 0;
+      while (i < srda4D) {
+	PTC_START, X=X0, PX=0.0, Y=Y0, PY=0.0, T=0.0, PT=0.0;
+	i = i + 1;
+      }
+      j = j + 1;
+    }
+    PTC_TRACK, ICASE=4, CLOSED_ORBIT, TURNS=ntda4D;
+    PTC_TRACK_END;
+  PTC_END;
+  j = 0;
+  while (j < spda4D) {
+    m = j + 1;
+    EXEC, wmacro(dac,RSURV,$m);
+    rida4D = val;
+    rada4D = rida4D + rostep;
+
+    kmin = spda4D * srda4D + j * srda4D + 1;
+    kmax = spda4D * srda4D + (j+1) * srda4D + 1;
+
+    k = kmin;
+    while(k < kmax) {
+      EXEC, wmacro(tracksumm,turn,$k);
+      if (val == ntda4D) {
+	rsurv = rida4D + (rada4D-rida4D)/(srda4D-1) * (k-kmin);
+      }
+      if (val <> ntda4D) {
+	k = kmax;
+      }
+      k = k + 1;
+    }
+    X0surv = rsurv * cos((pida4D + (pada4D-pida4D)/(spda4D-1) * abs(j)) * pi);
+    Y0surv = rxyda4D * rsurv * sin((pida4D + (pada4D-pida4D)/(spda4D-1) * abs(j)) * pi);
+    phisurv = pida4D + (pada4D-pida4D)/(spda4D-1) * abs(j);
+    FILL, table=da;
+    FILL, table=da2; 
+    j = j + 1;
+  }
+  WRITE, table=dac;
+  WRITE, table=da2;
+  WRITE, table=da;
+  WRITE, table=da2, file=dynap_phi_nnda4D.txt;
+  WRITE, table=da, file=dynap_nnda4D.txt;
+}
+
+sP6D(ntsP6D, x0sP6D, px0sP6D, y0sP6D, py0sP6D, t0sP6D, pt0sP6D, nnsP6D) : macro {
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=false,totalpath=false,fringe=false,radiation=true,stochastic=false,envelope=false, seed=1;
+    PTC_TWISS, ICASE=6, CLOSED_ORBIT, NO=2, RMATRIX, t=0.0;
+    PTC_START, X=x0sP6D, PX=px0sP6D, Y=y0sP6D, PY=py0sP6D, T=t0sP6D, PT=pt0sP6D;
+    PTC_TRACK, ICASE=6, CLOSED_ORBIT, RADIATION,TURNS=ntsP6D, DUMP, FILE=nnsP6D;
+    PTC_TRACK_END;
+  PTC_END;
+}
+
+sP6Dnr(ntsP6Dnr, x0sP6Dnr, px0sP6Dnr, y0sP6Dnr, py0sP6Dnr, t0sP6Dnr, pt0sP6Dnr, nnsP6Dnr) : macro {
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=false,radiation=false,stochastic=false,envelope=false;
+
+    PTC_START, X=x0sP6Dnr, PX=px0sP6Dnr, Y=y0sP6Dnr, PY=py0sP6Dnr, T=t0sP6Dnr, PT=pt0sP6Dnr;
+    PTC_TRACK, ICASE=6, CLOSED_ORBIT,TURNS=ntsP6Dnr, DUMP, FILE=nnsP6Dnr;
+    PTC_TRACK_END;
+  PTC_END;
+}
+
+sP5D(ntsP5D, x0sP5D, px0sP5D, y0sP5D, py0sP5D, t0sP5D, pt0sP5D, nnsP5D) : macro {
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=false,stochastic=false,envelope=false;
+
+    PTC_START, X=x0sP5D, PX=px0sP5D, Y=y0sP5D, PY=py0sP5D, T=t0sP5D, PT=pt0sP5D;
+    PTC_TRACK, ICASE=5, CLOSED_ORBIT,TURNS=ntsP5D, DUMP, FILE=nnsP5D;
+    PTC_TRACK_END;
+  PTC_END;
+}
+
+sP4D(ntsP4D, x0sP4D, px0sP4D, y0sP4D, py0sP4D, t0sP4D, pt0sP4D, nnsP4D) : macro {
+  PTC_CREATE_UNIVERSE;
+   PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+   PTC_ALIGN;
+   PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=false,stochastic=false,envelope=false;
+
+   PTC_START, X=x0sP4D, PX=px0sP4D, Y=y0sP4D, PY=py0sP4D, T=t0sP4D, PT=pt0sP4D;
+   PTC_TRACK, ICASE=4, CLOSED_ORBIT,TURNS=ntsP4D, DUMP, FILE=nnsP4D;
+   PTC_TRACK_END;
+  PTC_END;
+}
+
+sda6D(ntsda6D, xisda6D, xasda6D, yisda6D, yasda6D, sxsda6D, sysda6D, nnsda6D) : macro {
+  i = 0;
+  j = 0;
+  X0 := xisda6D + (xasda6D-xisda6D)/sxsda6D * i;
+  Y0 := yisda6D + (yasda6D-yisda6D)/sysda6D * j;
+
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=false,radiation=true,stochastic=false,envelope=false, seed=1;
+    PTC_TWISS, ICASE=6, CLOSED_ORBIT, NO=2, RMATRIX, t=0.7;
+    i = 0;
+    while (i < spda6D+1) {	
+
+      j = 0;
+      while (j < srda6D+1) {
+	PTC_START, X=X0, PX=0.0, Y=Y0, PY=0.0, T=0.0, PT=0.0;
+	j = j + 1;
+      }
+      i = i + 1;
+    }
+    PTC_TRACK, ICASE=6, CLOSED_ORBIT, RADIATION,TURNS=ntsda6D, onetable, file=nnsda6D;
+    PTC_TRACK_END;
+  PTC_END;
+}
+
+da6D(ntda6D, rida6D, rada6D, pida6D, pada6D, srda6D, spda6D, rxyda6D, nnda6D) : macro {
+  CREATE, table=dac, column=phisurv,rsurv;
+  CREATE, table=da2, column=phisurv,rsurv;
+  CREATE, table=da, column=X0surv, Y0surv;
+  rsurv = 0;
+  phisurv = 0;
+  j = 0;
+  i = 0;
+  X0 := (rida6D + (rada6D-rida6D)/(srda6D-1) * abs(i)) * cos((pida6D + (pada6D-pida6D)/(spda6D-1) * abs(j)) * pi);
+  Y0 := rxyda6D * (rida6D + (rada6D-rida6D)/(srda6D-1) * abs(i)) * sin((pida6D + (pada6D-pida6D)/(spda6D-1) * abs(j)) * pi);
+
+  PRINT, text="******/////////******";
+  PRINT, text="coarse scan";
+  PRINT, text="******/////////******";
+ 
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=false,totalpath=false,fringe=true,radiation=true,stochastic=true,envelope=true, seed=1;
+    PTC_TWISS, ICASE=6, CLOSED_ORBIT, NO=2, RMATRIX;
+    j = 0;
+    while (j < spda6D) {	
+      i = 0;
+      while (i < srda6D) {
+	PTC_START, X=X0, PX=0.0, Y=Y0, PY=0.0, T=0.0, PT=0.0;
+	i = i + 1;
+      }
+      j = j + 1;
+    }
+    PTC_TRACK, ICASE=6, CLOSED_ORBIT, RADIATION,TURNS=ntda6D;
+    PTC_TRACK_END;
+  PTC_END;
+
+  j = 0;
+  while (j < spda6D) {
+    kmin = spda6D * srda6D + j * srda6D + 1;
+    kmax = spda6D * srda6D + (j+1) * srda6D + 1;
+    k = kmin;
+    while(k < kmax) {
+      EXEC, wmacro(tracksumm,turn,$k);
+      if (val == ntda6D) {
+	rsurv = rida6D + (rada6D-rida6D)/(srda6D-1) * (k-kmin);
+      }
+      if (val <> ntda6D) {
+	k = kmax;
+      }
+      k = k + 1;
+    }
+
+    phisurv = pida6D + (pada6D-pida6D)/(spda6D-1) * abs(j);
+    FILL, table=dac;
+    j = j + 1;
+  } 
+
+  WRITE, table=dac;
+  PRINT, text="doing fine scan now...";
+
+  rio = rida6D;
+  rostep = (rada6D-rida6D)/(srda6D-1);
+  j = 0;
+  i = 0;
+
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=false,totalpath=false,fringe=true,radiation=true,stochastic=true,envelope=true, seed=1;
+    PTC_TWISS, ICASE=6, CLOSED_ORBIT, NO=2, RMATRIX;
+    j = 0;
+    while (j < spda6D) {	
+      k = j + 1;
+      EXEC, wmacro(dac,RSURV,$k);
+      rida6D = val;
+      rada6D = rida6D + rostep;
+      X0 := (rida6D + (rada6D-rida6D)/(srda6D-1) * abs(i)) * cos((pida6D + (pada6D-pida6D)/(spda6D-1) * abs(j)) * pi);
+      Y0 := rxyda6D * (rida6D + (rada6D-rida6D)/(srda6D-1) * abs(i)) * sin((pida6D + (pada6D-pida6D)/(spda6D-1) * abs(j)) * pi);
+      i = 0;
+      while (i < srda6D) {
+	PTC_START, X=X0, PX=0.0, Y=Y0, PY=0.0, T=0.0, PT=0.0;
+	i = i + 1;
+      }
+      j = j + 1;
+    }
+    PTC_TRACK, ICASE=6, CLOSED_ORBIT, RADIATION, TURNS=ntda6D;
+    PTC_TRACK_END;
+  PTC_END;
+  j = 0;
+  while (j < spda6D) {
+    m = j + 1;
+    EXEC, wmacro(dac,RSURV,$m);
+    rida6D = val;
+    rada6D = rida6D + rostep;
+    rsurv = val;
+    kmin = spda6D * srda6D + j * srda6D + 1;
+    kmax = spda6D * srda6D + (j+1) * srda6D + 1;
+
+    k = kmin;
+    while(k < kmax) {
+      EXEC, wmacro(tracksumm,turn,$k);
+      if (val == ntda6D) {
+	rsurv = rida6D + (rada6D-rida6D)/(srda6D-1) * (k-kmin);
+      }
+      if (val <> ntda6D) {
+	k = kmax;
+      }
+      k = k + 1;
+    }
+ 
+    X0surv = rsurv * cos((pida6D + (pada6D-pida6D)/(spda6D-1) * abs(j)) * pi);
+    Y0surv = rxyda6D * rsurv * sin((pida6D + (pada6D-pida6D)/(spda6D-1) * abs(j)) * pi);
+    phisurv = pida6D + (pada6D-pida6D)/(spda6D-1) * abs(j);
+    FILL, table=da;
+    FILL, table=da2; 
+    j = j + 1;
+  }
+
+  WRITE, table=dac;
+  WRITE, table=da2;
+  WRITE, table=da;
+  WRITE, table=da2, file=dynap_phi_nnda6D.txt;
+  WRITE, table=da, file=dynap_nnda6D.txt;
+}
+
+da6Dr(ntda6Dr, rida6Dr, rada6Dr, pida6Dr, pada6Dr, srda6Dr, spda6Dr, rxyda6Dr, nnda6Dr) : macro {
+  CREATE, table=dac, column=phisurv,rsurv;
+  CREATE, table=da2, column=phisurv,rsurv;
+  CREATE, table=da, column=X0surv, Y0surv;
+  rsurv = 0;
+  phisurv = 0;
+  j = 0;
+  i = 0;
+  X0 := (rida6Dr + (rada6Dr-rida6Dr)/(srda6Dr-1) * abs(i)) * cos((pida6Dr + (pada6Dr-pida6Dr)/(spda6Dr-1) * abs(j)) * pi);
+  Y0 := rxyda6Dr * (rida6Dr + (rada6Dr-rida6Dr)/(srda6Dr-1) * abs(i)) * sin((pida6Dr + (pada6Dr-pida6Dr)/(spda6Dr-1) * abs(j)) * pi);
+
+  PRINT, text="******/////////******";
+  PRINT, text="coarse scan";
+  PRINT, text="******/////////******";
+ 
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=false,totalpath=false,fringe=true,radiation=true,stochastic=false,envelope=false, seed=1;
+    PTC_TWISS, ICASE=6, CLOSED_ORBIT, NO=2, RMATRIX;
+    j = 0;
+    while (j < spda6Dr) {
+      i = 0;
+      while (i < srda6Dr) {
+        PTC_START, X=X0, PX=0.0, Y=Y0, PY=0.0, T=0.0, PT=0.0;
+        i = i + 1;
+      }
+      j = j + 1;
+    }
+    PTC_TRACK, ICASE=6, CLOSED_ORBIT, RADIATION,TURNS=ntda6Dr;
+    PTC_TRACK_END;
+  PTC_END;
+
+  j = 0;
+  while (j < spda6Dr) {
+    kmin = spda6Dr * srda6Dr + j * srda6Dr + 1;
+    kmax = spda6Dr * srda6Dr + (j+1) * srda6Dr + 1;
+    k = kmin;
+    while(k < kmax) {
+      EXEC, wmacro(tracksumm,turn,$k);
+      // val is set in weird macro
+      if (val == ntda6Dr) {
+	rsurv = rida6Dr + (rada6Dr-rida6Dr)/(srda6Dr-1) * (k-kmin);
+      }
+      if (val <> ntda6Dr) {
+	k = kmax;
+      }
+      k = k + 1;
+    }
+
+    phisurv = pida6Dr + (pada6Dr-pida6Dr)/(spda6Dr-1) * abs(j);
+    FILL, table=dac;
+    j = j + 1;
+  } 
+
+  WRITE, table=dac;
+  PRINT, text="doing fine scan now...";
+
+  rio = rida6Dr;
+  rostep = (rada6Dr-rida6Dr)/(srda6Dr-1);
+  j = 0;
+  i = 0;
+
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=false,totalpath=false,fringe=true,radiation=true,stochastic=false,envelope=false, seed=1;
+    PTC_TWISS, ICASE=6, CLOSED_ORBIT, NO=2, RMATRIX;
+    j = 0;
+    while (j < spda6Dr) {	
+      k = j + 1;
+      EXEC, wmacro(dac,RSURV,$k);
+      rida6Dr = val;
+      rada6Dr = rida6Dr + rostep;
+      X0 := (rida6Dr + (rada6Dr-rida6Dr)/(srda6Dr-1) * abs(i)) * cos((pida6Dr + (pada6Dr-pida6Dr)/(spda6Dr-1) * abs(j)) * pi);
+      Y0 := rxyda6Dr * (rida6Dr + (rada6Dr-rida6Dr)/(srda6Dr-1) * abs(i)) * sin((pida6Dr + (pada6Dr-pida6Dr)/(spda6Dr-1) * abs(j)) * pi);
+      i = 0;
+      while (i < srda6Dr) {
+	PTC_START, X=X0, PX=0.0, Y=Y0, PY=0.0, T=0.0, PT=0.0;
+	i = i + 1;
+      }
+      j = j + 1;
+    }
+    PTC_TRACK, ICASE=6, CLOSED_ORBIT, RADIATION, TURNS=ntda6Dr;
+    PTC_TRACK_END;
+  PTC_END;
+
+  j = 0;
+  while (j < spda6Dr) {
+    m = j + 1;
+    EXEC, wmacro(dac,RSURV,$m);
+    rida6Dr = val;
+    rada6Dr = rida6Dr + rostep;
+    rsurv = val;
+    kmin = spda6Dr * srda6Dr + j * srda6Dr + 1;
+    kmax = spda6Dr * srda6Dr + (j+1) * srda6Dr + 1;
+
+    k = kmin;
+    while(k < kmax) {
+      EXEC, wmacro(tracksumm,turn,$k);
+      if (val == ntda6Dr) {
+	rsurv = rida6Dr + (rada6Dr-rida6Dr)/(srda6Dr-1) * (k-kmin);
+      }
+      if (val <> ntda6Dr) {
+	k = kmax;
+      }
+      k = k + 1;
+    }
+ 
+    X0surv = rsurv * cos((pida6Dr + (pada6Dr-pida6Dr)/(spda6Dr-1) * abs(j)) * pi);
+    Y0surv = rxyda6Dr * rsurv * sin((pida6Dr + (pada6Dr-pida6Dr)/(spda6Dr-1) * abs(j)) * pi);
+    phisurv = pida6Dr + (pada6Dr-pida6Dr)/(spda6Dr-1) * abs(j);
+    FILL, table=da;
+    FILL, table=da2; 
+    j = j + 1;
+  }
+
+  WRITE, table=dac;
+  WRITE, table=da2;
+  WRITE, table=da;
+  WRITE, table=da2, file=dynap_phi_nnda6Dr.txt;
+  WRITE, table=da, file=dynap_nnda6Dr.txt;
+}
+
+da6Dnr(ntda6Dn, rida6Dn, rada6Dn, pida6Dn, pada6Dn, srda6Dn, spda6Dn, rxyda6Dn, nnda6Dn) : macro {
+  CREATE, table=dac, column=phisurv,rsurv;
+  CREATE, table=da2, column=phisurv,rsurv;
+  CREATE, table=da, column=X0surv, Y0surv;
+  rsurv = 0;
+  phisurv = 0;
+  j = 0;
+  i = 0;
+  X0 := (rida6Dn + (rada6Dn-rida6Dn)/(srda6Dn-1) * abs(i)) * cos((pida6Dn + (pada6Dn-pida6Dn)/(spda6Dn-1) * abs(j)) * pi);
+  Y0 := rxyda6Dn * (rida6Dn + (rada6Dn-rida6Dn)/(srda6Dn-1) * abs(i)) * sin((pida6Dn + (pada6Dn-pida6Dn)/(spda6Dn-1) * abs(j)) * pi);
+
+  PRINT, text="******/////////******";
+  PRINT, text="coarse scan";
+  PRINT, text="******/////////******";
+ 
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=false,stochastic=false,envelope=false, seed=1;
+    j = 0;
+    while (j < spda6Dn) {	
+      i = 0;
+      while (i < srda6Dn) {
+	PTC_START, X=X0, PX=0.0, Y=Y0, PY=0.0, T=0.0, PT=0.0;
+	i = i + 1;
+      }
+      j = j + 1;
+    }
+    PTC_TRACK, ICASE=6, CLOSED_ORBIT,TURNS=ntda6Dn;
+    PTC_TRACK_END;
+  PTC_END;
+
+  j = 0;
+  while (j < spda6Dn) {
+    kmin = spda6Dn * srda6Dn + j * srda6Dn + 1;
+    kmax = spda6Dn * srda6Dn + (j+1) * srda6Dn + 1;
+    k = kmin;
+    while(k < kmax) {
+      EXEC, wmacro(tracksumm,turn,$k);
+      if (val == ntda6Dn) {
+	rsurv = rida6Dn + (rada6Dn-rida6Dn)/(srda6Dn-1) * (k-kmin);
+      }
+      if (val <> ntda6Dn) {
+	k = kmax;
+      }
+
+      k = k + 1;
+    }
+
+    phisurv = pida6Dn + (pada6Dn-pida6Dn)/(spda6Dn-1) * abs(j);
+    FILL, table=dac;
+    j = j + 1;
+  } 
+
+  WRITE, table=dac;
+
+  PRINT, text="doing fine scan now...";
+
+  rio = rida6Dn;
+  rostep = (rada6Dn-rida6Dn)/(srda6Dn-1);
+  j = 0;
+  i = 0;
+  X0 := (rida6Dn + (rada6Dn-rida6Dn)/(srda6Dn-1) * abs(i)) * cos((pida6Dn + (pada6Dn-pida6Dn)/(spda6Dn-1) * abs(j)) * pi);
+  Y0 := rxyda6Dn * (rida6Dn + (rada6Dn-rida6Dn)/(srda6Dn-1) * abs(i)) * sin((pida6Dn + (pada6Dn-pida6Dn)/(spda6Dn-1) * abs(j)) * pi);
+
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=false,stochastic=false,envelope=false, seed=1;
+    j = 0;
+    while (j < spda6Dn) {	
+      k = j + 1;
+      EXEC, wmacro(dac,RSURV,$k);
+      rida6Dn = val;
+      rada6Dn = rida6Dn + rostep;
+      i = 0;
+      while (i < srda6Dn) {
+	PTC_START, X=X0, PX=0.0, Y=Y0, PY=0.0, T=0.0, PT=0.0;
+	i = i + 1;
+      }
+      j = j + 1;
+    }
+    PTC_TRACK, ICASE=6, CLOSED_ORBIT, TURNS=ntda6Dn;
+    PTC_TRACK_END;
+  PTC_END;
+  j = 0;
+  while (j < spda6Dn) {
+    m = j + 1;
+    EXEC, wmacro(dac,RSURV,$m);
+    rida6Dn = val;
+
+    rada6Dn = rida6Dn + rostep;
+
+    kmin = spda6Dn * srda6Dn + j * srda6Dn + 1;
+    kmax = spda6Dn * srda6Dn + (j+1) * srda6Dn + 1;
+
+    k = kmin;
+    while(k < kmax) {
+      EXEC, wmacro(tracksumm,turn,$k);
+      if (val == ntda6Dn) {
+	rsurv = rida6Dn + (rada6Dn-rida6Dn)/(srda6Dn-1) * (k-kmin);
+      }
+      if (val <> ntda6Dn) {
+	k = kmax;
+      }
+      k = k + 1;
+    }
+ 
+    X0surv = rsurv * cos((pida6Dn + (pada6Dn-pida6Dn)/(spda6Dn-1) * abs(j)) * pi);
+    Y0surv = rxyda6Dn * rsurv * sin((pida6Dn + (pada6Dn-pida6Dn)/(spda6Dn-1) * abs(j)) * pi);
+    phisurv = pida6Dn + (pada6Dn-pida6Dn)/(spda6Dn-1) * abs(j);
+    FILL, table=da;
+    FILL, table=da2; 
+    j = j + 1;
+  }
+  WRITE, table=dac;
+  WRITE, table=da2;
+  WRITE, table=da;
+  WRITE, table=da2, file=dynap_phi_nnda6Dn.txt;
+  WRITE, table=da, file=dynap_nnda6Dn.txt;
+}
+
+twissptc: macro {
+  PTC_CREATE_UNIVERSE;
+    PTC_CREATE_LAYOUT, MODEL=ptcmodel,NST=1,METHOD=ptcmethod,EXACT=true,RESPLIT,THIN=ptcsplit,XBEND=ptcsplit;
+    PTC_ALIGN;
+    PTC_SETSWITCH, debuglevel=1,maxacceleration=false,exact_mis=true,time=true,totalpath=false,fringe=true,radiation=true,stochastic=true,envelope=true, seed=1;
+    PTC_TWISS, ICASE=6, CLOSED_ORBIT, NO=2, RMATRIX;
+  PTC_END;
+  qx0 = table(ptc_twiss_summary,q1,1);
+  qy0 = table(ptc_twiss_summary,q2,1);
+}
